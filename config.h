@@ -14,7 +14,7 @@ static const char col_gray4[]       = "#eeeeee";
 static const char col_cyan[]        = "#005577";
 
 static const char col_barbg[]   = "#1e1e2e";  // bar background
-static const char col_text[]    = "#cdd6f4";  // normal text
+static const char col_text[]    = "#8888aa";  // normal text
 static const char col_text_sel[] = "#ffffff"; // selected text
 
 static const char col_border_inactive[] = "#313244";
@@ -124,6 +124,28 @@ static const char *clipboard[] = { "clipmenu", NULL };
 static const char *emoji[] = { "rofimoji", "--action", "copy", NULL };
 static const char *redshift[] = { "/home/surt/garage/dwm/scripts/redshift.sh", NULL };
 
+void
+shiftview(const Arg *arg)
+{
+    int i;
+    unsigned int curtag = 0;
+    unsigned int newtag;
+
+    /* find current tag index */
+    for (i = 0; i < LENGTH(tags); i++) {
+        if (selmon->tagset[selmon->seltags] & (1 << i)) {
+            curtag = i;
+            break;
+        }
+    }
+
+    /* compute new tag index */
+    newtag = (curtag + arg->i + LENGTH(tags)) % LENGTH(tags);
+
+    Arg a = {.ui = 1 << newtag};
+    view(&a);
+}
+
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY,                       XK_a,      spawn,          {.v = dmenucmd } },
@@ -146,8 +168,8 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_f,      setlayout,      {.v = &layouts[1]} },
   { MODKEY,                       XK_f,      fullscreen,     {0} },
 	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
-	{ MODKEY,                       XK_space,  setlayout,      {0} },
-	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
+	{ MODKEY,                       XK_space,  togglefloating, {0} },
+	{ MODKEY|ShiftMask,             XK_space,  setlayout,      {0} },
 	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
 	{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
 	{ MODKEY,                       XK_comma,  focusmon,       {.i = -1 } },
@@ -180,6 +202,8 @@ static const Key keys[] = {
   { MODKEY,                       XK_v,      spawn,          { .v = clipboard } },
   { MODKEY,                       XK_period, spawn,          { .v = emoji } },
   { MODKEY,                       XK_g,      spawn,          { .v = redshift } },
+  { MODKEY|Mod1Mask,              XK_Left,   shiftview,           { .i = -1 } },
+  { MODKEY|Mod1Mask,              XK_Right,  shiftview,           { .i = +1 } },
 };
 
 /* button definitions */
