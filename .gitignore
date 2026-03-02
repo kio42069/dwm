@@ -1,0 +1,14 @@
+# Compiled binary
+dwm
+
+# Object files
+*.o 
+
+# Patch rejections
+*.rej 
+
+# Backup/original files 
+*.orig 
+
+# Build artifacts
+config.mk.old
