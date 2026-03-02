@@ -76,7 +76,7 @@ static const Layout layouts[] = {
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = { "dmenu_run", "-b", "-m", dmenumon, "-fn", dmenufont, "-nb", "#000000", "-nf", "#ffffff", "-sb", "#b2d4fa", "-sf", "#000000", NULL };
+static const char *dmenucmd[] = { "dmenu_run", "-b", "-i", "-m", dmenumon, "-fn", dmenufont, "-nb", "#000000", "-nf", "#ffffff", "-sb", "#b2d4fa", "-sf", "#000000", NULL };
 static const char *termcmd[]  = { "st", NULL };
 static const char *slock[] = {
   "sh", "-c",
@@ -102,7 +102,7 @@ static const char *voldown[] = {
 // static const char *voltog[] = { "pamixer", "-t", NULL };
 static const char *voltog[] = {
     "sh", "-c",
-    "pamixer -t; MUTE=$(pamixer --get-mute); notify-send -a Volume -r 32 \"$MUTE\"",
+    "MUTE=$(pamixer --get-mute); pamixer -t; notify-send -a Volume -r 32 \"$MUTE\"",
     NULL
 };
 // static const char *brightup[] = { "brightnessctl", "s", "5%+", NULL };
@@ -129,6 +129,7 @@ static const char *clipboard[] = { "clipmenu", NULL };
 static const char *emoji[] = { "rofimoji", "--action", "copy", NULL };
 static const char *redshift[] = { "/home/surt/garage/dwm/scripts/redshift.sh", NULL };
 static const char *touchtoggle[] = { "/home/surt/garage/dwm/scripts/touchtog.sh", NULL };
+static const char *powermenu[] = { "/home/surt/garage/dwm/scripts/powermenu", NULL };
 
 void
 shiftview(const Arg *arg)
@@ -175,8 +176,8 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
 	{ MODKEY,                       XK_F11,    setlayout,      {.v = &layouts[3]} },
 	{ MODKEY,                       XK_F12,    setlayout,      {.v = &layouts[4]} },
-  { MODKEY|ShiftMask,             XK_Left,   movestack,      {.i = +1 } },
-  { MODKEY|ShiftMask,             XK_Right,  movestack,      {.i = -1 } },
+  { MODKEY|ShiftMask,             XK_Left,   movestack,      {.i = -1 } },
+  { MODKEY|ShiftMask,             XK_Right,  movestack,      {.i = +1 } },
   { MODKEY,                       XK_f,      fullscreen,     {0} },
 	{ MODKEY,                       XK_space,  togglefloating, {0} },
 	{ MODKEY|ShiftMask,             XK_space,  setlayout,      {0} },
@@ -213,6 +214,7 @@ static const Key keys[] = {
   { MODKEY,                       XK_period, spawn,          { .v = emoji } },
   { MODKEY,                       XK_g,      spawn,          { .v = redshift } },
   { MODKEY,                       XK_Delete, spawn,          { .v = touchtoggle } },
+  { MODKEY,                       XK_x,      spawn,          { .v = powermenu } },
   { MODKEY|Mod1Mask,              XK_Left,   shiftview,           { .i = -1 } },
   { MODKEY|Mod1Mask,              XK_Right,  shiftview,           { .i = +1 } },
   { MODKEY,                       XK_bracketleft,setcfact,        { .f = -0.25 } },
