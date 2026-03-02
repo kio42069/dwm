@@ -123,6 +123,7 @@ static const char *snoop[] = {"systemctl", "suspend", NULL};
 static const char *clipboard[] = { "clipmenu", NULL };
 static const char *emoji[] = { "rofimoji", "--action", "copy", NULL };
 static const char *redshift[] = { "/home/surt/garage/dwm/scripts/redshift.sh", NULL };
+static const char *touchtoggle[] = { "/home/surt/garage/dwm/scripts/touchtog.sh", NULL };
 
 void
 shiftview(const Arg *arg)
@@ -202,8 +203,11 @@ static const Key keys[] = {
   { MODKEY,                       XK_v,      spawn,          { .v = clipboard } },
   { MODKEY,                       XK_period, spawn,          { .v = emoji } },
   { MODKEY,                       XK_g,      spawn,          { .v = redshift } },
+  { MODKEY,                       XK_Delete, spawn,          { .v = touchtoggle } },
   { MODKEY|Mod1Mask,              XK_Left,   shiftview,           { .i = -1 } },
   { MODKEY|Mod1Mask,              XK_Right,  shiftview,           { .i = +1 } },
+  { MODKEY,                       XK_bracketleft,setcfact,        { .f = -0.25 } },
+  { MODKEY,                       XK_bracketright,setcfact,       { .f = +0.25 } },
 };
 
 /* button definitions */
