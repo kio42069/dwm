@@ -44,6 +44,7 @@ static const Rule rules[] = {
 	/* class      instance    title       tags mask     isfloating   monitor */
 	{ "Gimp",     NULL,       NULL,       0,            1,           -1 },
 	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           -1 },
+  { "Alacritty",NULL,       "floatterm",0,            1,           -1 },
 };
 
 /* layout(s) */
@@ -77,7 +78,7 @@ static const Layout layouts[] = {
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-b", "-i", "-m", dmenumon, "-fn", dmenufont, "-nb", "#000000", "-nf", "#ffffff", "-sb", "#b2d4fa", "-sf", "#000000", NULL };
-static const char *termcmd[]  = { "st", NULL };
+static const char *termcmd[]  = { "alacritty", NULL };
 static const char *slock[] = {
   "sh", "-c",
   "slock & systemctl suspend", 
@@ -125,11 +126,24 @@ static const char *mictog[] = {
 };
 static const char *filemgr[] = { "thunar", NULL };
 static const char *snoop[] = {"systemctl", "suspend", NULL};
-static const char *clipboard[] = { "clipmenu", NULL };
+static const char *clipboard[] = { "copyq", "menu", NULL };
 static const char *emoji[] = { "rofimoji", "--action", "copy", NULL };
 static const char *redshift[] = { "/home/surt/garage/dwm/scripts/redshift.sh", NULL };
 static const char *touchtoggle[] = { "/home/surt/garage/dwm/scripts/touchtog.sh", NULL };
 static const char *powermenu[] = { "/home/surt/garage/dwm/scripts/powermenu", NULL };
+static const char *define[] = {
+    "sh", "-c",
+    "/home/surt/garage/dwm/scripts/define \"$(copyq read 0)\"",
+    NULL
+};
+// static const char *floattermcmd[] = { "alacritty", "-T", "floatterm", NULL };
+static const char *floattermcmd[] = {
+    "alacritty",
+    "--title", "floatterm",
+    "--option", "window.dimensions.columns=50",
+    "--option", "window.dimensions.lines=15",
+    NULL
+};
 
 void
 shiftview(const Arg *arg)
@@ -171,7 +185,7 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_Return, zoom,           {0} },
 	{ MODKEY,                       XK_Tab,    view,           {0} },
 	{ MODKEY,                       XK_q,      killclient,     {0} },
-	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
+	{ MODKEY,                       XK_u,      setlayout,      {.v = &layouts[0]} },
 	{ MODKEY|ShiftMask,             XK_f,      setlayout,      {.v = &layouts[1]} },
 	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
 	{ MODKEY,                       XK_F11,    setlayout,      {.v = &layouts[3]} },
@@ -215,10 +229,12 @@ static const Key keys[] = {
   { MODKEY,                       XK_g,      spawn,          { .v = redshift } },
   { MODKEY,                       XK_Delete, spawn,          { .v = touchtoggle } },
   { MODKEY,                       XK_x,      spawn,          { .v = powermenu } },
-  { MODKEY|Mod1Mask,              XK_Left,   shiftview,           { .i = -1 } },
-  { MODKEY|Mod1Mask,              XK_Right,  shiftview,           { .i = +1 } },
-  { MODKEY,                       XK_bracketleft,setcfact,        { .f = -0.25 } },
-  { MODKEY,                       XK_bracketright,setcfact,       { .f = +0.25 } },
+  { MODKEY|Mod1Mask,              XK_Left,   shiftview,      { .i = -1 } },
+  { MODKEY|Mod1Mask,              XK_Right,  shiftview,      { .i = +1 } },
+  { MODKEY,                       XK_t,      spawn,          {.v = floattermcmd } },
+  { MODKEY,                       XK_Escape, spawn,          {.v = define } },
+  // { MODKEY,                       XK_bracketleft,setcfact,   { .f = -0.25 } },
+  // { MODKEY,                       XK_bracketright,setcfact,  { .f = +0.25 } },
 };
 
 /* button definitions */

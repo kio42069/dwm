@@ -1,0 +1,18 @@
+#!/bin/bash
+
+selection=$(copyq eval -- "
+  for (var i = 0; i < size(); ++i)
+    print(str(read(i)).replace(/\n/g,' ') + '\n');
+" | rofi -dmenu -i -p "Clipboard")
+
+[ -z "$selection" ] && exit
+
+copyq eval -- "
+  for (var i = 0; i < size(); ++i) {
+    if (str(read(i)).replace(/\n/g,' ') === '$selection') {
+      select(i);
+      break;
+    }
+  }
+"
+copyq paste
