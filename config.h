@@ -45,7 +45,7 @@ static const Rule rules[] = {
 	{ "Gimp",     NULL,       NULL,       0,            1,           -1 },
 	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           -1 },
   // { "Alacritty",NULL,       "floatterm",0,            1,           -1 ,  50,50,500,500, 5},
-  { "Alacritty",NULL,       NULL,       0,            1,           -1, 650,350,600,500, 5},
+  { "Alacritty",NULL,       "floatterm",       0,            1,           -1, 650,350,600,500, 5},
 };
 
 /* layout(s) */
@@ -239,6 +239,10 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_grave,  scratchpad_show,{ 0 } },
 	{ MODKEY|ShiftMask,             XK_grave,  scratchpad_hide,{ 0 } },
 	{ MODKEY,                       XK_equal,  scratchpad_remove,{ 0 } },
+  { MODKEY|ShiftMask|ControlMask, XK_Left,   movekeyboard_x, {.i = -50 } },
+  { MODKEY|ShiftMask|ControlMask, XK_Right,  movekeyboard_x, {.i = +50 } },
+  { MODKEY|ShiftMask|ControlMask, XK_Up,     movekeyboard_y, {.i = -50 } },
+  { MODKEY|ShiftMask|ControlMask, XK_Down,   movekeyboard_y, {.i = +50 } },
 };
 
 /* button definitions */
