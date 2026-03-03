@@ -9,7 +9,7 @@ RED="^c#FF0000^"
 YELLOW="^c#FFFF00^"
 GREEN="^c#00FF00^"
 RESET="^d^"
-
+ARROW="↓"
 if [ "$STATUS" = "Discharging" ]; then
     if [ "$PERCENT" -le 15 ]; then
         COLOR=$RED
@@ -19,7 +19,8 @@ if [ "$STATUS" = "Discharging" ]; then
         COLOR=$GREEN
     fi
 else
+    ARROW="↑"
     COLOR=$GREEN
 fi
 
-echo "${COLOR} ${PERCENT}% ${STATUS}${RESET} "
+echo "${COLOR} ${PERCENT}% ${ARROW}${RESET} "
