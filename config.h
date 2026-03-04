@@ -78,7 +78,8 @@ static const Layout layouts[] = {
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = { "dmenu_run", "-b", "-i", "-m", dmenumon, "-fn", dmenufont, "-nb", "#000000", "-nf", "#ffffff", "-sb", "#b2d4fa", "-sf", "#000000", NULL };
+// static const char *dmenucmd[] = { "dmenu_run", "-b", "-i", "-m", dmenumon, "-fn", dmenufont, "-nb", "#000000", "-nf", "#ffffff", "-sb", "#b2d4fa", "-sf", "#000000", NULL };
+static const char *dmenucmd[] = { "sh", "-c", "/home/surt/garage/dwm/scripts/dmenu-rofi.sh", NULL };
 static const char *termcmd[]  = { "alacritty", NULL };
 static const char *slock[] = {
   "sh", "-c",
@@ -92,19 +93,19 @@ static const char *screenshotcmd[] = { "/bin/sh", "-c", "maim -s | xclip -sel c 
 // static const char *volup[] = { "pamixer", "-i", "5;", "export", "VOL=$(pamixer --get-volume);", "notify-send", "$VOL", NULL };
 static const char *volup[] = {
     "sh", "-c",
-    "pamixer -i 5; VOL=$(pamixer --get-volume); notify-send -a Volume -r 32 \"$VOL\"",
+    "pamixer -i 5; VOL=$(pamixer --get-volume); notify-send -a Volume -r 32 \"$VOL\"; pkill -RTMIN+5 dwmblocks",
     NULL
 };
 // static const char *voldown[] = { "pamixer", "-d", "5", NULL };
 static const char *voldown[] = {
     "sh", "-c",
-    "pamixer -d 5; VOL=$(pamixer --get-volume); notify-send -a Volume -r 32 \"$VOL\"",
+    "pamixer -d 5; VOL=$(pamixer --get-volume); notify-send -a Volume -r 32 \"$VOL\"; pkill -RTMIN+5 dwmblocks",
     NULL
 };
 // static const char *voltog[] = { "pamixer", "-t", NULL };
 static const char *voltog[] = {
     "sh", "-c",
-    "MUTE=$(pamixer --get-mute); pamixer -t; notify-send -a Volume -r 32 \"$MUTE\"",
+    "MUTE=$(pamixer --get-mute); pamixer -t; notify-send -a Volume -r 32 \"$MUTE\"; pkill -RTMIN+5 dwmblocks",
     NULL
 };
 // static const char *brightup[] = { "brightnessctl", "s", "5%+", NULL };
@@ -194,6 +195,7 @@ static const Key keys[] = {
   { MODKEY|ShiftMask,             XK_Left,   movestack,      {.i = -1 } },
   { MODKEY|ShiftMask,             XK_Right,  movestack,      {.i = +1 } },
   { MODKEY,                       XK_f,      fullscreen,     {0} },
+  { MODKEY|ShiftMask,             XK_f,      togglefullscr,  {0} },
 	{ MODKEY,                       XK_space,  togglefloating, {0} },
 	{ MODKEY|ShiftMask,             XK_space,  setlayout,      {0} },
 	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
@@ -243,6 +245,17 @@ static const Key keys[] = {
   { MODKEY|ShiftMask|ControlMask, XK_Right,  movekeyboard_x, {.i = +50 } },
   { MODKEY|ShiftMask|ControlMask, XK_Up,     movekeyboard_y, {.i = -50 } },
   { MODKEY|ShiftMask|ControlMask, XK_Down,   movekeyboard_y, {.i = +50 } },
+  { MODKEY,                       XK_F1,     spawn,          SHCMD("playerctl previous") },
+  { MODKEY,                       XK_F2,     spawn,          SHCMD("playerctl play-pause") },
+  { MODKEY,                       XK_F3,     spawn,          SHCMD("playerctl next") },
+  { Mod1Mask,                     XK_bracketleft,spawn,      SHCMD("xdotool mousemove_relative -- -10 0") },
+  { Mod1Mask,                     XK_backslash,spawn,        SHCMD("xdotool mousemove_relative -- +10 0") },
+  { Mod1Mask,                     XK_bracketright,spawn,     SHCMD("xdotool mousemove_relative -- 0 +10") },
+  { Mod1Mask,                     XK_equal,spawn,            SHCMD("xdotool mousemove_relative -- 0 -10") },
+  { Mod1Mask,                     XK_semicolon,spawn,        SHCMD("xdotool click 1") },
+  { Mod1Mask,                     XK_apostrophe,spawn,       SHCMD("xdotool click 3") },
+  { Mod1Mask|ShiftMask,           XK_semicolon,spawn,        SHCMD("xdotool mousedown 1") },
+  { Mod1Mask|ShiftMask,           XK_apostrophe,spawn,       SHCMD("xdotool mouseup 1") },
 };
 
 /* button definitions */
