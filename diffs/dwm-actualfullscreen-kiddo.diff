@@ -1,0 +1,70 @@
+diff --git a/config.h b/config.h
+index 8423052..803713e 100644
+--- a/config.h
++++ b/config.h
+@@ -264,7 +264,7 @@ static const Button buttons[] = {
+ 	/* click                event mask      button          function        argument */
+ 	{ ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
+ 	{ ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]} },
+-	{ ClkWinTitle,          0,              Button2,        zoom,           {0} },
++	// { ClkWinTitle,          0,              Button2,        zoom,           {0} },
+ 	{ ClkStatusText,        0,              Button2,        spawn,          {.v = termcmd } },
+ 	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
+ 	{ ClkClientWin,         MODKEY,         Button2,        togglefloating, {0} },
+diff --git a/dwm.c b/dwm.c
+index 48a6c33..a8bdb95 100644
+--- a/dwm.c
++++ b/dwm.c
+@@ -63,8 +63,8 @@ enum { NetSupported, NetWMName, NetWMState, NetWMCheck,
+        NetWMFullscreen, NetActiveWindow, NetWMWindowType,
+        NetWMWindowTypeDialog, NetClientList, NetClientInfo, NetLast }; /* EWMH atoms */
+ enum { WMProtocols, WMDelete, WMState, WMTakeFocus, WMLast }; /* default atoms */
+-enum { ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle,
+-       ClkClientWin, ClkRootWin, ClkLast }; /* clicks */
++enum { ClkTagBar, ClkLtSymbol, ClkStatusText, ClkClientWin,
++       ClkRootWin, ClkLast }; /* clicks */
+ 
+ typedef union {
+ 	int i;
+@@ -489,7 +489,7 @@ buttonpress(XEvent *e)
+ 		else if (ev->x > selmon->ww - (int)TEXTW(stext))
+ 			click = ClkStatusText;
+ 		else
+-			click = ClkWinTitle;
++      click = ClkStatusText; 
+ 	} else if ((c = wintoclient(ev->window))) {
+ 		focus(c);
+ 		restack(selmon);
+@@ -887,17 +887,8 @@ drawbar(Monitor *m)
+ 	x = drw_text(drw, x, 0, w, bh, lrpad / 2, m->ltsymbol, 0);
+ 
+ 	if ((w = m->ww - tw - x) > bh) {
+-		if (m->sel) {
+-			drw_setscheme(drw, scheme[m == selmon ? SchemeSel : SchemeNorm]);
+-			tlpad = MAX((m->ww - ((int)TEXTW(m->sel->name) - lrpad)) / 2 - x, lrpad / 2);
+-			drw_text(drw, x, 0, w, bh, tlpad, m->sel->name, 0);
+-			if (m->sel->isfloating)
+-				drw_rect(drw, x + boxs + tlpad - lrpad / 2, boxs,
+-					boxw, boxw, m->sel->isfixed, 0);
+-		} else {
+-			drw_setscheme(drw, scheme[SchemeNorm]);
+-			drw_rect(drw, x, 0, w, bh, 1, 1);
+-		}
++    drw_setscheme(drw, scheme[SchemeNorm]);
++    drw_rect(drw, x, 0, w, bh, 1, 1);
+ 	}
+ 	drw_map(drw, m->barwin, 0, 0, m->ww, bh);
+ }
+@@ -1508,11 +1499,8 @@ propertynotify(XEvent *e)
+ 			drawbars();
+ 			break;
+ 		}
+-		if (ev->atom == XA_WM_NAME || ev->atom == netatom[NetWMName]) {
++		if (ev->atom == XA_WM_NAME || ev->atom == netatom[NetWMName]) 
+ 			updatetitle(c);
+-			if (c == c->mon->sel)
+-				drawbar(c->mon);
+-		}
+ 		if (ev->atom == netatom[NetWMWindowType])
+ 			updatewindowtype(c);
+ 	}
