@@ -4,6 +4,10 @@
 #include "movestack.c"
 
 /* appearance */
+static const int usealtbar          = 1;        /* 1 means use non-dwm status bar */
+static const char *altbarclass      = "Polybar"; /* Alternate bar class name */
+static const char *altbarcmd        = "/home/surt/.config/polybar/launch.sh"; /* Alternate bar launch command */
+
 static const unsigned int borderpx  = 3;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int showbar            = 1;        /* 0 means no bar */
@@ -47,6 +51,7 @@ static const Rule rules[] = {
 	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           -1 },
   // { "Alacritty",NULL,       "floatterm",0,            1,           -1 ,  50,50,500,500, 5},
   { "Alacritty",NULL,       "floatterm",       0,            1,           -1, 650,350,600,500, 5},
+  { "Nsxiv", NULL, NULL, 0, 1, -1, 650, 350, 600, 500, 5 }
 };
 
 /* layout(s) */
@@ -257,6 +262,7 @@ static const Key keys[] = {
   { Mod1Mask,                     XK_apostrophe,spawn,       SHCMD("xdotool click 3") },
   { Mod1Mask|ShiftMask,           XK_semicolon,spawn,        SHCMD("xdotool mousedown 1") },
   { Mod1Mask|ShiftMask,           XK_apostrophe,spawn,       SHCMD("xdotool mouseup 1") },
+  { MODKEY|Mod1Mask,              XK_w,     spawn,           SHCMD("/home/surt/garage/dwm/scripts/dmenu_wallpaper.sh") }
 };
 
 /* button definitions */
